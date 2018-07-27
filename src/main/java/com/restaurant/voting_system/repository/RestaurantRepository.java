@@ -5,18 +5,19 @@ import com.restaurant.voting_system.model.Restaurant;
 import java.util.List;
 
 public interface RestaurantRepository {
-    Restaurant save(Restaurant restaurant);
+
+    Restaurant save(Restaurant restaurant, int userId);
 
     // false if not found
-    boolean delete(int id);
+    boolean delete(int id, int userId);
 
     // null if not found
-    Restaurant get(int id);
+    Restaurant get(int id, int userId);
 
     // null if not found
-    Restaurant getByName(String name);
+    Restaurant getByName(String name, int userId);
 
     List<Restaurant> getMenu();
 
-    List<Restaurant> getMenuByDate();
+    List<Restaurant> getMenuByDate(int userId);
 }

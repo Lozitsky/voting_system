@@ -1,6 +1,6 @@
 package com.restaurant.voting_system.model;
 
-public class AbstractNamedEntity extends AbstractEntity {
+public abstract class AbstractNamedEntity extends AbstractEntity {
     protected String name;
 
     public AbstractNamedEntity() {

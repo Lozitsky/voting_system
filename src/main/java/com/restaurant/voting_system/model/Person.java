@@ -7,7 +7,7 @@ import java.util.Date;
 import java.util.EnumSet;
 import java.util.Set;
 
-public class Person extends AbstractNamedEntity{
+public abstract class Person extends AbstractNamedEntity{
 
     private String email;
 
