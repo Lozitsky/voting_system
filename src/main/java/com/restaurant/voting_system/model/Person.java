@@ -2,21 +2,37 @@ package com.restaurant.voting_system.model;
 
 import org.springframework.util.CollectionUtils;
 
+import javax.persistence.*;
+import javax.validation.constraints.Email;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Size;
 import java.util.Collections;
 import java.util.Date;
 import java.util.EnumSet;
 import java.util.Set;
 
+@Entity
+@Table(name = "persons", uniqueConstraints = {@UniqueConstraint(columnNames = "email", name = "persons_unique_email_idx")})
 public abstract class Person extends AbstractNamedEntity{
 
+    @Column(name = "email", nullable = false, unique = true)
+    @Email
+    @NotBlank
+    @Size(max = 100)
     private String email;
 
+    @Column(name = "password", nullable = false)
+    @NotBlank
+    @Size(min = 5, max = 100)
     private String password;
 
+    @Column(name = "enabled", nullable = false, columnDefinition = "bool default true")
     private boolean enabled;
 
-    private Date registered = new Date();
-
+    @Enumerated(EnumType.STRING)
+    @CollectionTable(name = "person_roles", joinColumns = @JoinColumn(name = "person_id"))
+    @Column(name = "role")
+    @ElementCollection(fetch = FetchType.EAGER)
     private Set<Role> roles;
 
     public Person() {
@@ -26,16 +42,14 @@ public abstract class Person extends AbstractNamedEntity{
         this.email = email;
         this.password = password;
         this.enabled = enabled;
-        this.registered = registered;
         this.roles = roles;
     }
 
     public Person(Integer id, String name, String email, String password, boolean enabled, Date registered, Set<Role> roles) {
-        super(id, name);
+        super(id, name, registered);
         this.email = email;
         this.password = password;
         this.enabled = enabled;
-        this.registered = registered;
         this.roles = roles;
     }
 
@@ -61,14 +75,6 @@ public abstract class Person extends AbstractNamedEntity{
 
     public void setEnabled(boolean enabled) {
         this.enabled = enabled;
-    }
-
-    public Date getRegistered() {
-        return registered;
-    }
-
-    public void setRegistered(Date registered) {
-        this.registered = registered;
     }
 
     public Set<Role> getRoles() {
